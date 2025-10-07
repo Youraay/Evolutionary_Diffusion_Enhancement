@@ -23,8 +23,8 @@ def generate_baseline_for_prompt(
     logger.info(f"SDXL {sdxl_path}")
     logger.info(f"")
     sdxl = model_loader.load_sdxl()
-    # blip2 = model_loader.load_blip2_embeddings()
-    # clip = model_loader.load_clip_embeddings()
+    blip2 = model_loader.load_blip2_embeddings()
+    clip = model_loader.load_clip_embeddings()
 
     nf = NoiseFactory(device=model_loader.device, dtype= model_loader.dtype)
     population = nf.create_batch(count)
@@ -37,13 +37,12 @@ def generate_baseline_for_prompt(
 
         logger.info(noise.initial_noise.size)
         noise.pil_image = sdxl.generate(noise.initial_noise, prompt)
-        # noise.blip2_embedding = blip2.embed(noise.pil_image)
-        # noise.clip_embedding = clip.embed(noise.pil_image)
+        noise.blip2_embedding = blip2.embed(noise.pil_image)
+        noise.clip_embedding = clip.embed(noise.pil_image)
 
-        noise.save_pil_image(sdxl_path / f"{img_id:4d}.png")
-        # noise.save_blip2(blip_2_path / f"{img_id:4d}.png")
-        # noise.save_clip(clip_path / f"{img_id:4d}.png")
-        break
+        noise.save_pil_image(sdxl_path)
+        noise.save_blip2(blip_2_path)
+        noise.save_clip(clip_path)
 
 load_dotenv()
 generate_baseline_for_prompt(
