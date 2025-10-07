@@ -1,0 +1,32 @@
+load conda environment
+/scratch/dldevel/sinziri/miniconda3/envs/genetic/bin/python3
+loaded conda environment
+start genetic search algorithem
+Tue Oct  7 12:57:16 PM CEST 2025
+/scratch/dldevel/sinziri/miniconda3/envs/genetic/lib/python3.12/site-packages/transformers/utils/hub.py:111: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+  warnings.warn(
+Loading pipeline components...:   0%|          | 0/7 [00:00<?, ?it/s]Loading pipeline components...:  14%|█▍        | 1/7 [00:00<00:00,  9.02it/s]Loading pipeline components...:  43%|████▎     | 3/7 [00:01<00:02,  1.71it/s]Loading pipeline components...:  57%|█████▋    | 4/7 [00:03<00:02,  1.08it/s]Loading pipeline components...:  71%|███████▏  | 5/7 [00:08<00:04,  2.40s/it]Loading pipeline components...:  86%|████████▌ | 6/7 [00:43<00:12, 12.72s/it]Loading pipeline components...: 100%|██████████| 7/7 [00:47<00:00, 10.03s/it]Loading pipeline components...: 100%|██████████| 7/7 [00:47<00:00,  6.75s/it]
+Loading pipeline components...:   0%|          | 0/5 [00:00<?, ?it/s]Loading pipeline components...:  80%|████████  | 4/5 [00:21<00:05,  5.48s/it]Loading pipeline components...: 100%|██████████| 5/5 [00:21<00:00,  4.39s/it]
+  0%|          | 0/40 [00:00<?, ?it/s]  2%|▎         | 1/40 [00:02<01:40,  2.59s/it]  8%|▊         | 3/40 [00:02<00:27,  1.37it/s] 10%|█         | 4/40 [00:02<00:18,  1.94it/s] 12%|█▎        | 5/40 [00:02<00:13,  2.65it/s] 15%|█▌        | 6/40 [00:03<00:09,  3.46it/s] 18%|█▊        | 7/40 [00:03<00:07,  4.36it/s] 20%|██        | 8/40 [00:03<00:06,  5.28it/s] 22%|██▎       | 9/40 [00:03<00:05,  6.17it/s] 25%|██▌       | 10/40 [00:03<00:04,  6.97it/s] 28%|██▊       | 11/40 [00:03<00:03,  7.66it/s] 30%|███       | 12/40 [00:03<00:03,  8.23it/s] 32%|███▎      | 13/40 [00:03<00:03,  8.67it/s] 35%|███▌      | 14/40 [00:03<00:02,  9.01it/s] 38%|███▊      | 15/40 [00:03<00:02,  9.26it/s] 40%|████      | 16/40 [00:04<00:02,  9.45it/s] 42%|████▎     | 17/40 [00:04<00:02,  9.59it/s] 45%|████▌     | 18/40 [00:04<00:02,  9.68it/s] 48%|████▊     | 19/40 [00:04<00:02,  9.75it/s] 50%|█████     | 20/40 [00:04<00:02,  9.80it/s] 52%|█████▎    | 21/40 [00:04<00:01,  9.84it/s] 55%|█████▌    | 22/40 [00:04<00:01,  9.86it/s] 57%|█████▊    | 23/40 [00:04<00:01,  9.87it/s] 60%|██████    | 24/40 [00:04<00:01,  9.89it/s] 62%|██████▎   | 25/40 [00:04<00:01,  9.89it/s] 65%|██████▌   | 26/40 [00:05<00:01,  9.90it/s] 68%|██████▊   | 27/40 [00:05<00:01,  9.89it/s] 70%|███████   | 28/40 [00:05<00:01,  9.89it/s] 72%|███████▎  | 29/40 [00:05<00:01,  9.91it/s] 75%|███████▌  | 30/40 [00:05<00:01,  9.91it/s] 78%|███████▊  | 31/40 [00:05<00:00,  9.90it/s] 80%|████████  | 32/40 [00:05<00:00,  9.88it/s] 82%|████████▎ | 33/40 [00:05<00:00,  9.87it/s] 85%|████████▌ | 34/40 [00:05<00:00,  9.88it/s] 88%|████████▊ | 35/40 [00:05<00:00,  9.89it/s] 90%|█████████ | 36/40 [00:06<00:00,  9.88it/s] 92%|█████████▎| 37/40 [00:06<00:00,  9.87it/s] 95%|█████████▌| 38/40 [00:06<00:00,  9.88it/s] 98%|█████████▊| 39/40 [00:06<00:00,  9.89it/s]100%|██████████| 40/40 [00:06<00:00,  9.90it/s]100%|██████████| 40/40 [00:06<00:00,  6.16it/s]
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/scratch/dldevel/sinziri/Evolutionary_Diffusion_Enhancement/preflight/generate_baseline_for_prompt.py", line 49, in <module>
+    generate_baseline_for_prompt(
+  File "/scratch/dldevel/sinziri/Evolutionary_Diffusion_Enhancement/preflight/generate_baseline_for_prompt.py", line 39, in generate_baseline_for_prompt
+    noise.pil_image = sdxl.generate(noise.initial_noise, prompt)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/dldevel/sinziri/Evolutionary_Diffusion_Enhancement/src/huggingface_models/text_to_image/stable_diffusion_xl.py", line 90, in generate
+    image = self.refiner(prompt=prompt,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/dldevel/sinziri/miniconda3/envs/genetic/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/dldevel/sinziri/miniconda3/envs/genetic/lib/python3.12/site-packages/diffusers/pipelines/stable_diffusion_xl/pipeline_stable_diffusion_xl.py", line 1138, in __call__
+    add_time_ids = self._get_add_time_ids(
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/dldevel/sinziri/miniconda3/envs/genetic/lib/python3.12/site-packages/diffusers/pipelines/stable_diffusion_xl/pipeline_stable_diffusion_xl.py", line 745, in _get_add_time_ids
+    raise ValueError(
+ValueError: Model expects an added time embedding vector of length 2560, but a vector of 2816 was created. The model has an incorrect config. Please check `unet.config.time_embedding_type` and `text_encoder_2.config.projection_dim`.
+job finished
+Tue Oct  7 01:00:18 PM CEST 2025

@@ -121,7 +121,7 @@ class Noise:
     def save_noise(self,
                  filepath: str,
     ) -> None:
-        torch.save(self.latent_representation, f"{filepath}/{self.id}")
+        torch.save(self.initial_noise, f"{filepath}/{self.id}")
 
     def save_representation(self,
                  filepath: str,
