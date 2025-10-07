@@ -1,7 +1,7 @@
 import random
 
 from src.models import Noise
-from src.selectors.base_selector import SelectorFunction
+from src.selector_functions.base_selectorf_unction import SelectorFunction
 
 
 class RouletteWheelSelector(SelectorFunction):

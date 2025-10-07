@@ -64,6 +64,14 @@ class NoiseFactory:
         self.id_count += 1
         return noise_id
 
+    def create_noise_from_noise(self, noise: torch.Tensor,):
+        noise_id: str = self._create_id()
+
+        return Noise(
+            id=noise_id,
+            initial_noise=noise
+        )
+
     def create_noise(self,
                      num_channels_latents: int = 4,
                      height: int = 1024,
@@ -86,7 +94,7 @@ class NoiseFactory:
         noise_id : str = self._create_id()
         return Noise(
             id=noise_id,
-            initial_noise=initial_noise[0],
+            initial_noise=initial_noise,
             initial_seed=seed,
         )
 

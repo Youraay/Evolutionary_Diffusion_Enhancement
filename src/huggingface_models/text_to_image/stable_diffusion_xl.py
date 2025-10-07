@@ -7,7 +7,7 @@ from src.huggingface_models.base_strategy import GenerativModelStrategy
 class StableDiffusionXLModel(GenerativModelStrategy):
 
     def __init__(self,
-                 device: torch.device,
+                 device: str,
                  dtype: torch.dtype,
                  cache_dir: str,
                  num_inference_steps: int = 50,

@@ -5,6 +5,20 @@ import torch
 from PIL import Image
 from typing import Optional, Dict
 
+
+def _save_pil(pil_image: Image.Image,
+              full_path: Path,
+              file_format : str = "JPEG",
+              ) -> None:
+
+    full_path.parent.mkdir(parents=True, exist_ok=True)
+
+    if pil_image is not None:
+        pil_image.save(full_path, format=file_format)
+    else:
+        raise ValueError()
+
+
 @dataclass
 class Noise:
     """
@@ -30,7 +44,8 @@ class Noise:
     blip2_embedding : torch.Tensor = None
     clip_embedding : torch.Tensor = None
     fitness: float = None
-    evaluation_scores: dict[str, float] = field(default_factory=dict)
+    evaluation_scores: list[dict[str, float]] = field(default_factory=dict)
+    caption :str = None
     start_generation: int = None
     end_generation: int = None
     parent_1: "Noise" = None
@@ -38,21 +53,10 @@ class Noise:
     crossover: bool = None
     mutate: bool = None
 
-    def _save_pil(self,
-                  pil_image: Image.Image,
-                  filepath: str,
-                  file_format : str = "JPEG",
-                  ) -> None:
-        path = Path(filepath)
-        fitness =  0.0 if self.fitness is None else self.fitness
-        filename = Path(f"image_g{self.end_generation}_{self.id}_f{fitness}.{file_format}")
-        full_path = path / filename
-        full_path.parent.mkdir(parents=True, exist_ok=True)
-
-        if pil_image is not None:
-            pil_image.save(full_path, format=file_format)
-        else:
-            raise ValueError()
+    @property
+    def filename(self):
+        fitness = 0.0 if self.fitness is None else self.fitness
+        return f"image_g{self.end_generation}_{self.id}_f{fitness}"
 
     def save_pil_image(self,
                        filepath: str,
@@ -60,8 +64,11 @@ class Noise:
                        ) -> None:
 
         try:
-            self._save_pil(pil_image=self.pil_image,
-                           filepath=filepath,
+            path = Path(filepath)
+            file = f"{self.filename}.{file_format}"
+            full_path = path / file
+            _save_pil(pil_image=self.pil_image,
+                           full_path=full_path,
                            file_format=file_format)
         except ValueError as e:
             raise ValueError(f"No pil image available for noise {self.id}") from e
@@ -101,8 +108,11 @@ class Noise:
             raise Exception(f"Failed to convert initial noise to rgb image: {e}")
 
         try:
-            self._save_pil(pil_image=image,
-                           filepath=filepath,
+            path = Path(filepath)
+            file = f"{self.filename}.{file_format}"
+            full_path = path / file
+            _save_pil(pil_image=image,
+                           full_path=full_path,
                            file_format=file_format)
         except ValueError as e:
             raise ValueError(f"Error while saving image to RGB: {e}")
@@ -127,3 +137,12 @@ class Noise:
                  filepath: str,
     ) -> None:
         torch.save(self.clip_embedding, f"{filepath}/clip_{self.id}")
+
+    def calculate_fitness(self) -> None:
+
+        if len(self.evaluation_scores) == 0:
+            self.fitness = 0.0
+        elif len(self.evaluation_scores) == 1:
+            self.fitness = self.evaluation_scores[0]["score"]
+        else:
+            self.fitness = sum(self.evaluation_scores) / len(self.evaluation_scores)

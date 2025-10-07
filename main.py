@@ -1,11 +1,56 @@
 import logging
 import os
+from pathlib import Path
 
-from src.factory import NoiseFactory
+from crossover import UniformCrossover
+from evaluators.kernel_density_entimation_evaluator import KernelDensityEstimationEvaluator
+from huggingface_models import ModelLoader
+from mutators.uniform_gaussian_mutator import UniformGaussianMutator
+from pipelines.genetic_algorithm import GeneticAlgorithmPipeline
+from selector_functions.tournament_selector import TournamentSelector
+from src.factorys import NoiseFactory
+
 logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
 
 def main():
-    print("Hello from thesis!")
+
+    prompt = "a cat"
+
+    base_path = Path(os.environ.get("BASE_PATH"))
+    blip_2_path = base_path / Path(os.environ.get("BLIP_2_BASELINE", "")) / prompt.replace(" ", " ")
+    clip_path = base_path / Path(os.environ.get("CLIP_BASELINE", "")) / prompt.replace(" ", " ")
+    sdxl_path = base_path / Path(os.environ.get("SDXL_BASELINE", "")) / prompt.replace(" ", " ")
+
+    selector = TournamentSelector(tournament_size=1)
+    mutator = UniformGaussianMutator(mutation_rate=0.2,mutation_strengh=0.2)
+    crossover = UniformCrossover()
+    evaluator = KernelDensityEstimationEvaluator(prompt)
+
+    noise_factory = NoiseFactory()
+
+    ml = ModelLoader(cache_dir=os.environ.get("HF_CACHE", ""))
+
+    sdxl = ml.load_sdxl()
+    blip2 = ml.load_blip2_embeddings()
+
+    pipe = GeneticAlgorithmPipeline(
+        generative_model=sdxl,
+        embedding_model=blip2,
+        crossover_operation=crossover,
+        selector=selector,
+        mutator=mutator,
+        noise_factory=noise_factory,
+        evaluator=evaluator,
+        experiment_id=1,
+        num_generations=4,
+        population_size=10,
+        initial_mutation_rate=0.05,
+        initial_crossover_rate=0.8,
+        elite_size=0,
+        batch_size=3
+    )
+
+    pipe.run()
 
 
 if __name__ == "__main__":

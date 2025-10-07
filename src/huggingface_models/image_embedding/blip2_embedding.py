@@ -7,7 +7,7 @@ from transformers import Blip2Model, AutoProcessor
 class Blip2EmbeddingModel(EmbeddingModelStrategy):
 
     def __init__(self,
-                 device: torch.device,
+                 device: str,
                  dtype: torch.dtype,
                  cache_dir: str,
                  model: str = "Salesforce/blip2-opt-2.7b") -> None:

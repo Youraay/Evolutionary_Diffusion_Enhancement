@@ -7,7 +7,7 @@ from transformers import CLIPModel, CLIPProcessor
 class ClipEmbeddingModel(EmbeddingModelStrategy):
 
     def __init__(self,
-                 device: torch.device,
+                 device: str,
                  dtype: torch.dtype,
                  cache_dir: str,
                  model: str = "openai/clip-vit-base-patch32") -> None:
