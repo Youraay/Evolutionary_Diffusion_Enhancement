@@ -106,16 +106,17 @@ class NoiseFactory:
                                                   vae_scale_factor)
         seed: int = self._generate_seed()
 
-        initial_noise: torch.Tensor = self._generate_initial_noise(seed, latents_shape, init_noise_sigma)
+        initial_noises: torch.Tensor = self._generate_initial_noise(seed, latents_shape, init_noise_sigma)
         noises: List[Noise] = []
         for i in range(batch_size):
 
             noise_id : str = self._create_id()
 
-
+            initial_noise = initial_noises[i]
+            initial_noise.unsqueeze_(0)
             noise = Noise(
                 id=noise_id,
-                initial_noise=initial_noise[i],
+                initial_noise=initial_noise,
             )
             noises.append(noise)
 

@@ -12,26 +12,28 @@ from src.huggingface_models.text_to_image.stable_diffusion_xl import StableDiffu
     StableDiffusionXLModel
 
 logger = logging.getLogger(__name__)
-@dataclass
+
 class ModelLoader(object):
     _instances = {}
     _lock : Lock = Lock()
-    sdxl: StableDiffusionXLModel = None
-    blip2_embeddings : Blip2EmbeddingModel = None
-    blip2_captions : Blip2CaptioningModel = None
-    clip_embeddings : ClipEmbeddingModel = None
 
-    def __new__(cls):
+    def __new__(cls, cache_dir : str):
         with cls._lock:
             if cls not in cls._instances:
                 instance = super(ModelLoader, cls).__new__(cls)
                 cls._instances[cls] = instance
         return cls._instances[cls]
 
-    def __init__(self, cache_dir ="/scratch/dldevel/sinziri/huggingface_models"):
-        self.device = "cuda" if torch.cuda.is_available() else "cpu"
+    def __init__(self, cache_dir : str):
+
+        if hasattr(self, "_initialized") and self._initialized:
+            return
+        self.device = "cuda"  if torch.cuda.is_available() else "cpu"
         self.dtype = torch.float16 if torch.cuda.is_available() else torch.float32
         self.cache_dir = cache_dir
+        self.sdxl = None
+        self.blip2_embeddings = None
+        self.clip_embeddings = None
 
     def load_sdxl(self):
         if self.sdxl is None:
@@ -43,6 +45,8 @@ class ModelLoader(object):
         pass
 
     def load_clip_embeddings(self):
+        if self.clip_embeddings is None:
+            self.clip_embeddings = ClipEmbeddingModel(self.device, self.dtype, self.cache_dir)
         pass
 
     def load_blip2_embeddings(self):
