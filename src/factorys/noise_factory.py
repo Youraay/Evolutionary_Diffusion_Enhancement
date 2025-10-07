@@ -4,7 +4,7 @@ from typing import Tuple, List
 
 import torch
 
-from src.models import Noise, Latents
+from src.models import Noise
 
 
 def _create_latent_shape(batch_size: int = 1,
@@ -32,11 +32,11 @@ def _create_latent_shape(batch_size: int = 1,
 @dataclass
 class NoiseFactory:
     device : torch.device = "cuda"
-    dtype : torch.dtype = torch.float32
+    dtype : torch.dtype = torch.float16
     seed_clamp : Tuple[int, int] = (1, 2**32 -1)
     id_count: int = 0
-    num_channel_latents : int = 8
-    vae_scale_factor : int = 1
+    num_channel_latents : int = 4
+    vae_scale_factor : int = 8
 
     def _generate_seed(self):
         return random.randint(*self.seed_clamp)
@@ -45,7 +45,7 @@ class NoiseFactory:
                                 seed: int,
                                 latents_shape : Tuple[int, int, int, int],
                                 init_noise_sigma : float = 1.0
-    ) -> Latents:
+    ) -> torch.Tensor:
 
         generator = torch.Generator(device=self.device).manual_seed(seed)
 
@@ -106,7 +106,7 @@ class NoiseFactory:
                                                   vae_scale_factor)
         seed: int = self._generate_seed()
 
-        initial_noise: Latents = self._generate_initial_noise(seed, latents_shape, init_noise_sigma)
+        initial_noise: torch.Tensor = self._generate_initial_noise(seed, latents_shape, init_noise_sigma)
         noises: List[Noise] = []
         for i in range(batch_size):
 
