@@ -98,6 +98,7 @@ class StableDiffusionXLRefinerStrategy(StableDiffusionXLModel):
     def generate_batch(self,
                        noise_emds: list[torch.Tensor],
                        prompt: str):
+
         images = self.model(prompt=[prompt]*len(noise_emds),
                            latents=noise_emds,
                            output_type="latent",
@@ -106,7 +107,7 @@ class StableDiffusionXLRefinerStrategy(StableDiffusionXLModel):
                            guidance_scale=self.guidance_scale
                            ).images
 
-        image = self.refiner(prompt=prompt,
+        image = self.refiner(prompt=[prompt]*len(noise_emds),
                              num_inference_steps=self.num_inference_steps,
                              denoising_start=self.high_noise_frac,
                              image=images
