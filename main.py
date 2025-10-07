@@ -1,18 +1,19 @@
 import logging
 import os
 from pathlib import Path
-
-from crossover import UniformCrossover
-from evaluators.kernel_density_entimation_evaluator import KernelDensityEstimationEvaluator
-from huggingface_models import ModelLoader
-from mutators.uniform_gaussian_mutator import UniformGaussianMutator
-from pipelines.genetic_algorithm import GeneticAlgorithmPipeline
-from selector_functions.tournament_selector import TournamentSelector
+import argparse
+from src.utils.arg_parser import args
+from src.crossover import UniformCrossover
+from src.evaluators.kernel_density_entimation_evaluator import KernelDensityEstimationEvaluator
+from src.huggingface_models import ModelLoader
+from src.mutators.uniform_gaussian_mutator import UniformGaussianMutator
+from src.pipelines.genetic_algorithm import GeneticAlgorithmPipeline
+from src.selector_functions.tournament_selector import TournamentSelector
 from src.factorys import NoiseFactory
 
 logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
 
-def main():
+def main(experiment_id):
 
     prompt = "a cat"
 
@@ -41,7 +42,7 @@ def main():
         mutator=mutator,
         noise_factory=noise_factory,
         evaluator=evaluator,
-        experiment_id=1,
+        experiment_id=experiment_id,
         num_generations=4,
         population_size=10,
         initial_mutation_rate=0.05,
@@ -54,4 +55,6 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+
+    experiment_id = args().experiment_id
+    main(experiment_id= args.experiment_id)
