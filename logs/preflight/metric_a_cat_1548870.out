@@ -1,0 +1,32 @@
+load conda environment
+/scratch/dldevel/sinziri/miniconda3/envs/genetic/bin/python3
+loaded conda environment
+start genetic search algorithem
+Tue Oct  7 01:05:11 PM CEST 2025
+/scratch/dldevel/sinziri/miniconda3/envs/genetic/lib/python3.12/site-packages/transformers/utils/hub.py:111: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+  warnings.warn(
+Loading pipeline components...:   0%|          | 0/7 [00:00<?, ?it/s]Loading pipeline components...:  14%|█▍        | 1/7 [00:00<00:02,  2.20it/s]Loading pipeline components...:  29%|██▊       | 2/7 [00:01<00:02,  1.82it/s]Loading pipeline components...:  43%|████▎     | 3/7 [00:11<00:20,  5.01s/it]Loading pipeline components...:  57%|█████▋    | 4/7 [00:11<00:09,  3.11s/it]Loading pipeline components...:  71%|███████▏  | 5/7 [00:14<00:06,  3.16s/it]Loading pipeline components...: 100%|██████████| 7/7 [00:14<00:00,  2.13s/it]
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [03:53<03:53, 234.00s/it]Loading checkpoint shards: 100%|██████████| 2/2 [04:02<00:00, 101.17s/it]Loading checkpoint shards: 100%|██████████| 2/2 [04:02<00:00, 121.10s/it]
+Using a slow image processor as `use_fast` is unset and a slow processor was saved with this model. `use_fast=True` will be the default behavior in v4.52, even if the model was saved with a slow processor. This will result in minor differences in outputs. You'll still be able to use a slow processor with `use_fast=False`.
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:00<00:24,  2.02it/s]  6%|▌         | 3/50 [00:00<00:09,  5.20it/s] 10%|█         | 5/50 [00:00<00:06,  6.91it/s] 12%|█▏        | 6/50 [00:00<00:05,  7.54it/s] 14%|█▍        | 7/50 [00:01<00:05,  8.09it/s] 16%|█▌        | 8/50 [00:01<00:04,  8.54it/s] 18%|█▊        | 9/50 [00:01<00:04,  8.91it/s] 22%|██▏       | 11/50 [00:01<00:04,  9.37it/s] 24%|██▍       | 12/50 [00:01<00:03,  9.51it/s] 26%|██▌       | 13/50 [00:01<00:03,  9.62it/s] 28%|██▊       | 14/50 [00:01<00:03,  9.71it/s] 30%|███       | 15/50 [00:01<00:03,  9.77it/s] 32%|███▏      | 16/50 [00:01<00:03,  9.82it/s] 34%|███▍      | 17/50 [00:02<00:03,  9.86it/s] 36%|███▌      | 18/50 [00:02<00:03,  9.89it/s] 38%|███▊      | 19/50 [00:02<00:03,  9.90it/s] 40%|████      | 20/50 [00:02<00:03,  9.91it/s] 42%|████▏     | 21/50 [00:02<00:02,  9.92it/s] 44%|████▍     | 22/50 [00:02<00:02,  9.92it/s] 46%|████▌     | 23/50 [00:02<00:02,  9.93it/s] 48%|████▊     | 24/50 [00:02<00:02,  9.93it/s] 50%|█████     | 25/50 [00:02<00:02,  9.94it/s] 52%|█████▏    | 26/50 [00:02<00:02,  9.94it/s] 54%|█████▍    | 27/50 [00:03<00:02,  9.95it/s] 56%|█████▌    | 28/50 [00:03<00:02,  9.95it/s] 58%|█████▊    | 29/50 [00:03<00:02,  9.95it/s] 60%|██████    | 30/50 [00:03<00:02,  9.95it/s] 62%|██████▏   | 31/50 [00:03<00:01,  9.95it/s] 64%|██████▍   | 32/50 [00:03<00:01,  9.95it/s] 66%|██████▌   | 33/50 [00:03<00:01,  9.95it/s] 68%|██████▊   | 34/50 [00:03<00:01,  9.95it/s] 70%|███████   | 35/50 [00:03<00:01,  9.95it/s] 72%|███████▏  | 36/50 [00:03<00:01,  9.95it/s] 74%|███████▍  | 37/50 [00:04<00:01,  9.95it/s] 76%|███████▌  | 38/50 [00:04<00:01,  9.95it/s] 78%|███████▊  | 39/50 [00:04<00:01,  9.95it/s] 80%|████████  | 40/50 [00:04<00:01,  9.95it/s] 82%|████████▏ | 41/50 [00:04<00:00,  9.95it/s] 84%|████████▍ | 42/50 [00:04<00:00,  9.95it/s] 86%|████████▌ | 43/50 [00:04<00:00,  9.95it/s] 88%|████████▊ | 44/50 [00:04<00:00,  9.94it/s] 90%|█████████ | 45/50 [00:04<00:00,  9.95it/s] 92%|█████████▏| 46/50 [00:04<00:00,  9.95it/s] 94%|█████████▍| 47/50 [00:05<00:00,  9.95it/s] 96%|█████████▌| 48/50 [00:05<00:00,  9.95it/s] 98%|█████████▊| 49/50 [00:05<00:00,  9.94it/s]100%|██████████| 50/50 [00:05<00:00,  9.94it/s]100%|██████████| 50/50 [00:05<00:00,  9.28it/s]
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/scratch/dldevel/sinziri/Evolutionary_Diffusion_Enhancement/preflight/generate_baseline_for_prompt.py", line 49, in <module>
+    "a_cat",
+^^^^^^^^^^^^
+  File "/scratch/dldevel/sinziri/Evolutionary_Diffusion_Enhancement/preflight/generate_baseline_for_prompt.py", line 44, in generate_baseline_for_prompt
+    noise.save_blip2(blip_2_path)
+  File "/scratch/dldevel/sinziri/Evolutionary_Diffusion_Enhancement/src/models/noise.py", line 124, in save_blip2
+    torch.save(self.blip2_embedding, f"{filepath}/blip2_{self.id}")
+  File "/scratch/dldevel/sinziri/miniconda3/envs/genetic/lib/python3.12/site-packages/torch/serialization.py", line 964, in save
+    with _open_zipfile_writer(f) as opened_zipfile:
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/dldevel/sinziri/miniconda3/envs/genetic/lib/python3.12/site-packages/torch/serialization.py", line 828, in _open_zipfile_writer
+    return container(name_or_buffer)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/dldevel/sinziri/miniconda3/envs/genetic/lib/python3.12/site-packages/torch/serialization.py", line 792, in __init__
+    torch._C.PyTorchFileWriter(
+RuntimeError: Parent directory /scratch/dldevel/sinziri/Evolutionary_Diffusion_Enhancement/ressources/blip2_baseline_embeddings/a_cat does not exist.
+job finished
+Tue Oct  7 01:09:59 PM CEST 2025
