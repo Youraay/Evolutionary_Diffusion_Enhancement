@@ -35,7 +35,7 @@ class ModelLoader(object):
         self.blip2_embeddings = None
         self.clip_embeddings = None
 
-    def load_sdxl(self):
+    def load_sdxl(self) -> StableDiffusionXLModel:
         if self.sdxl is None:
             self.sdxl = StableDiffusionXLModel(self.device, self.dtype, self.cache_dir)
 
@@ -44,12 +44,12 @@ class ModelLoader(object):
     def load_sdxl_turbo(self):
         pass
 
-    def load_clip_embeddings(self):
+    def load_clip_embeddings(self) -> ClipEmbeddingModel:
         if self.clip_embeddings is None:
             self.clip_embeddings = ClipEmbeddingModel(self.device, self.dtype, self.cache_dir)
         return self.clip_embeddings
 
-    def load_blip2_embeddings(self):
+    def load_blip2_embeddings(self) -> Blip2EmbeddingModel:
         if self.blip2_embeddings is None:
             self.blip2_embeddings = Blip2EmbeddingModel(self.device, self.dtype, self.cache_dir)
         return self.blip2_embeddings

@@ -10,7 +10,7 @@ from src.huggingface_models.base_strategy import GenerativModelStrategy, Embeddi
 from src.mutators.base_mutator import MutationFunction
 from src.pipelines.genetic_algorithm import GeneticAlgorithmPipeline
 from src.pipelines.pipeline import Pipeline
-from src.selectors.base_selector import SelectorFunction
+from src.selector_functions.base_selectorf_unction import SelectorFunction
 
 @dataclass
 class PipelineBuilder(ABC):
