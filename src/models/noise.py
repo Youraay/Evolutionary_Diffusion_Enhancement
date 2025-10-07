@@ -44,7 +44,7 @@ class Noise:
     blip2_embedding : torch.Tensor = None
     clip_embedding : torch.Tensor = None
     fitness: float = None
-    evaluation_scores: list[dict[str, float]] = field(default_factory=dict)
+    evaluation_scores: list[dict[str, float]] = field(default_factory=list)
     caption :str = None
     start_generation: int = None
     end_generation: int = None
@@ -145,4 +145,5 @@ class Noise:
         elif len(self.evaluation_scores) == 1:
             self.fitness = self.evaluation_scores[0]["score"]
         else:
-            self.fitness = sum(self.evaluation_scores) / len(self.evaluation_scores)
+            score_values = [d["score"] for d in self.evaluation_scores]
+            self.fitness = sum(score_values) / len(score_values)
