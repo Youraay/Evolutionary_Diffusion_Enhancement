@@ -1,3 +1,4 @@
 .env
+.gitignore
 **/*.pyc
-ressources/
+logs/
