@@ -25,11 +25,11 @@ class GenerativModelStrategy(BaseStrategy, ABC):
 class EmbeddingModelStrategy(BaseStrategy, ABC):
 
     @abstractmethod
-    def embed(self, pixel_image : Image.Image ) -> torch.Tensor:
+    def image_features_extraction(self, pixel_image : Image.Image) -> torch.Tensor:
         raise NotImplementedError
 
     @abstractmethod
-    def embed_batch(self, pixel_images : list[Image.Image]) -> torch.Tensor:
+    def batch_image_features_extraction(self, pixel_images : list[Image.Image]) -> torch.Tensor:
         raise NotImplementedError
 
 class CaptionModelStrategy(BaseStrategy, ABC):

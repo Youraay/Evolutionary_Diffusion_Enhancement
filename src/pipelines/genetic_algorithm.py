@@ -118,7 +118,7 @@ class GeneticAlgorithmPipeline(Pipeline):
 
         embeddings = []
         for batch in self.create_batches(pils):
-            batch_embeddings = self.embedding_model.embed_batch(batch)
+            batch_embeddings = self.embedding_model.batch_image_features_extraction(batch)
             embeddings.extend(batch_embeddings)
 
         scores = self.evaluator.evaluate_batch(embeddings)
