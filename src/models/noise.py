@@ -92,12 +92,10 @@ class Noise:
                              .to(self.initial_noise.device))
             rgb_tensor = torch.einsum("...lxy,lr -> ...rxy", self.initial_noise, weights_tensor) \
                          + biases_tensor.unsqueeze(-1).unsqueeze(-1)
-
-            # Handle batch dimension - squeeze if batch size is 1
+            
             if rgb_tensor.dim() == 4 and rgb_tensor.shape[0] == 1:
-                rgb_tensor = rgb_tensor.squeeze(0)  # Remove batch dimension: [1, 3, H, W] -> [3, H, W]
+                rgb_tensor = rgb_tensor.squeeze(0) 
 
-            # Ensure we have [C, H, W] format before transpose to [H, W, C]
             if rgb_tensor.dim() == 3:
                 image_array = rgb_tensor.clamp(0, 255).byte().cpu().numpy().transpose(1, 2, 0)
             else:
@@ -121,21 +119,29 @@ class Noise:
     def save_noise(self,
                  filepath: str,
     ) -> None:
+        path = Path(filepath)
+        path.mkdir(parents=True, exist_ok=True)
         torch.save(self.initial_noise, f"{filepath}/{self.id}.pt")
 
     def save_representation(self,
                  filepath: str,
     ) -> None:
+        path = Path(filepath)
+        path.mkdir(parents=True, exist_ok=True)
         torch.save(self.latent_representation, f"{filepath}/img_{self.id}.pt")
 
     def save_blip2(self,
                  filepath: str,
     ) -> None:
+        path = Path(filepath)
+        path.mkdir(parents=True, exist_ok=True)
         torch.save(self.blip2_embedding, f"{filepath}/blip2_{self.id}.pt")
 
     def save_clip(self,
                  filepath: str,
     ) -> None:
+        path = Path(filepath)
+        path.mkdir(parents=True, exist_ok=True)
         torch.save(self.clip_embedding, f"{filepath}/clip_{self.id}.pt")
 
     def calculate_fitness(self) -> None:

@@ -18,14 +18,14 @@ def main(experiment_id):
     prompt = "a cat"
 
     base_path = Path(os.environ.get("BASE_PATH"))
-    blip_2_path = base_path / Path(os.environ.get("BLIP_2_BASELINE", "")) / prompt.replace(" ", " ")
-    clip_path = base_path / Path(os.environ.get("CLIP_BASELINE", "")) / prompt.replace(" ", " ")
-    sdxl_path = base_path / Path(os.environ.get("SDXL_BASELINE", "")) / prompt.replace(" ", " ")
+    blip_2_path = base_path / Path(os.environ.get("BLIP_2_BASELINE", "")) / prompt.replace(" ", "_")
+    clip_path = base_path / Path(os.environ.get("CLIP_BASELINE", "")) / prompt.replace(" ", "_")
+    sdxl_path = base_path / Path(os.environ.get("SDXL_BASELINE", "")) / prompt.replace(" ", "_")
 
     selector = TournamentSelector(tournament_size=2)
     mutator = UniformGaussianMutator(mutation_rate=0.2,mutation_strengh=0.2)
     crossover = UniformCrossover()
-    evaluator = KernelDensityEstimationEvaluator(prompt, metric_path=clip_path)
+    evaluator = KernelDensityEstimationEvaluator(prompt, metric_path=clip_path, bandwidth=1.0)
 
     noise_factory = NoiseFactory()
 

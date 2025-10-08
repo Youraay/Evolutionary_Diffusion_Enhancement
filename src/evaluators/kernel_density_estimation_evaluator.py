@@ -30,6 +30,7 @@ class KernelDensityEstimationEvaluator(Evaluator):
         else:
             self.metric_path = metric_path
         print(self.metric_path)
+
         glob = self.metric_path.glob("*.pt")
         data =[]
         for p in glob:
@@ -38,7 +39,7 @@ class KernelDensityEstimationEvaluator(Evaluator):
                 map_location=torch.device("cuda"),
                 weights_only=False,
                 )
-            data.append(dp.pooler_output)
+            data.append(dp)
         
         if len(data) == 0:
             raise FileNotFoundError(f"No metric found at {self.metric_path}")

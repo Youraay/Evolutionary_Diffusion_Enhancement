@@ -132,7 +132,7 @@ class GeneticAlgorithmPipeline(Pipeline):
                 captions.extend(batch_captions)
 
         for i, candidate in enumerate(self.population):
-            candidate.pil_images = pils[i]
+            candidate.pil_image = pils[i]
             candidate.blip2_embedding = embeddings[i]
             candidate.evaluation_scores.append(scores[i])
             candidate.calculate_fitness()

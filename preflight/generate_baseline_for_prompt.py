@@ -11,10 +11,9 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 
-def create_batches(self, embeds: list[Any]) -> Generator[list[Any], None, None]:
+def create_batches(embeds: list[Any]) -> Generator[list[Any], None, None]:
     num_samples = len(embeds)
-    for i in range(0, num_samples, self.batch_size):
-        # Schneidet die Liste der Tensoren in Chunks der Größe batch_size
+    for i in range(0, num_samples, 20):
         yield embeds[i:i + self.batch_size]
 
 
