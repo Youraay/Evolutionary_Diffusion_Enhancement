@@ -30,7 +30,6 @@ class Blip2EmbeddingModel(EmbeddingModelStrategy):
         with torch.no_grad():
             image_embeds = self.model.get_image_features(**inputs, legacy_output=False)
 
-
             return image_embeds
 
     def batch_image_features_extraction(self, pixel_images: list[Image.Image]) -> list[torch.Tensor]:
@@ -40,11 +39,6 @@ class Blip2EmbeddingModel(EmbeddingModelStrategy):
 
         with torch.no_grad():
             image_embeds = self.model.get_image_features(**inputs, legacy_output=False)
-
-        print(image_embeds.size())
-        print(len(image_embeds))
-        print(len(pixel_images))
-        print(image_embeds)
 
         output = [ image_embeds[i] for i in range(len(pixel_images))]
         return output
