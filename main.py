@@ -1,10 +1,10 @@
 import logging
 import os
 from pathlib import Path
-import argparse
+from dotenv import load_dotenv
 from src.utils.arg_parser import args
 from src.crossover import UniformCrossover
-from src.evaluators.kernel_density_entimation_evaluator import KernelDensityEstimationEvaluator
+from src.evaluators.kernel_density_estimation_evaluator import KernelDensityEstimationEvaluator
 from src.huggingface_models import ModelLoader
 from src.mutators.uniform_gaussian_mutator import UniformGaussianMutator
 from src.pipelines.genetic_algorithm import GeneticAlgorithmPipeline
@@ -22,7 +22,7 @@ def main(experiment_id):
     clip_path = base_path / Path(os.environ.get("CLIP_BASELINE", "")) / prompt.replace(" ", " ")
     sdxl_path = base_path / Path(os.environ.get("SDXL_BASELINE", "")) / prompt.replace(" ", " ")
 
-    selector = TournamentSelector(tournament_size=1)
+    selector = TournamentSelector(tournament_size=2)
     mutator = UniformGaussianMutator(mutation_rate=0.2,mutation_strengh=0.2)
     crossover = UniformCrossover()
     evaluator = KernelDensityEstimationEvaluator(prompt)
@@ -36,6 +36,7 @@ def main(experiment_id):
 
     pipe = GeneticAlgorithmPipeline(
         generative_model=sdxl,
+        prompt=prompt,
         embedding_model=blip2,
         crossover_operation=crossover,
         selector=selector,
@@ -55,6 +56,6 @@ def main(experiment_id):
 
 
 if __name__ == "__main__":
-
+    load_dotenv()
     experiment_id = args().experiment_id
-    main(experiment_id= args.experiment_id)
+    main(experiment_id= experiment_id)
