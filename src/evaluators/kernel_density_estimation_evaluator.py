@@ -14,6 +14,7 @@ class KernelDensityEstimationEvaluator(Evaluator):
                  rule_of_thumb: str = 'silverman',
                  bandwidth: float  | None = None,
                  kernel : str ='gaussian',
+                 metric_path : Path | None = None,
                  K : int = 128
 
 
@@ -22,11 +23,13 @@ class KernelDensityEstimationEvaluator(Evaluator):
         self.kernel: str = kernel
         self.prompt: str = prompt
         self.K : int = K
-
-        base_path = Path(os.environ['BASE_PATH'])
-        metrics_path = Path(os.environ['BLIP_2_BASELINE'])
-        self.metric_path  = base_path / metrics_path / self.prompt.replace(" ", "_")
-
+        if metric_path is None:
+            base_path = Path(os.environ['BASE_PATH'])
+            metrics_path = Path(os.environ['BLIP_2_BASELINE'])
+            self.metric_path  = base_path / metrics_path / self.prompt.replace(" ", "_")
+        else:
+            self.metric_path = metric_path
+        print(self.metric_path)
         glob = self.metric_path.glob("*.pt")
         data =[]
         for p in glob:

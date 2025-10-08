@@ -1,12 +1,23 @@
 import logging
 import os
 from pathlib import Path
+from typing import Any, Generator
+
 from dotenv import load_dotenv
 from src.factorys import NoiseFactory
 from src.huggingface_models import ModelLoader
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
+
+
+def create_batches(self, embeds: list[Any]) -> Generator[list[Any], None, None]:
+    num_samples = len(embeds)
+    for i in range(0, num_samples, self.batch_size):
+        # Schneidet die Liste der Tensoren in Chunks der Größe batch_size
+        yield embeds[i:i + self.batch_size]
+
+
 def generate_baseline_for_prompt(
         prompt : str,
         count : int,
@@ -33,21 +44,27 @@ def generate_baseline_for_prompt(
 
 
     img_id = 0
-    for noise in population:
 
-        logger.info(noise.initial_noise.size)
-        noise.pil_image = sdxl.generate(noise.initial_noise, prompt)
-        noise.blip2_embedding = blip2.embed(noise.pil_image)
-        noise.clip_embedding = clip.embed(noise.pil_image)
 
-        noise.save_pil_image(sdxl_path)
-        noise.save_blip2(blip_2_path)
-        noise.save_clip(clip_path)
+    pils = []
+    for batch in create_batches([candidate.initial_noise for candidate in population]):
+        pil_images = sdxl.generate_batch(batch, prompt)
+        pils.extend(pil_images)
+
+    blip2_e = []
+    for batch in create_batches(pils):
+        batch_embeddings = blip2.batch_qformer_feature_extraction(batch)
+        blip2_e.extend(batch_embeddings)
+
+    clip_e = []
+    for batch in create_batches(pils):
+        batch_embeddings = clip.batch_image_features_extraction(batch)
+        clip_e.extend(batch_embeddings)
 
 load_dotenv()
 generate_baseline_for_prompt(
-    "a_cat",
-    1000
+    "a_chair",
+    100
 )
 
 

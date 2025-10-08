@@ -24,7 +24,7 @@ class ClipEmbeddingModel(EmbeddingModelStrategy):
         self.processor = CLIPProcessor.from_pretrained(model)
 
 
-    def embed(self, pixel_image: Image.Image) -> torch.Tensor:
+    def image_features_extraction(self, pixel_image: Image.Image) -> torch.Tensor:
         inputs = self.processor(
             images=pixel_image,
             return_tensors="pt").to(
@@ -34,7 +34,7 @@ class ClipEmbeddingModel(EmbeddingModelStrategy):
             image_embeds = self.model.get_image_features(**inputs)
             return image_embeds
 
-    def embed_batch(self, pixel_images: list[Image.Image]) -> list[torch.Tensor]:
+    def batch_image_features_extraction(self, pixel_images: list[Image.Image]) -> list[torch.Tensor]:
 
         inputs = self.processor(images=pixel_images, return_tensors="pt").to(
             self.device)

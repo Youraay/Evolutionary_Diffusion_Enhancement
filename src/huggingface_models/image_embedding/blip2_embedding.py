@@ -23,23 +23,42 @@ class Blip2EmbeddingModel(EmbeddingModelStrategy):
         self.processor = AutoProcessor.from_pretrained(model)
 
 
-    def embed(self, pixel_image: Image.Image) -> torch.Tensor:
+    def image_features_extraction(self, pixel_image: Image.Image) -> torch.Tensor:
         inputs = self.processor(images=pixel_image, return_tensors="pt").to(
             self.device)
 
         with torch.no_grad():
-            image_embeds = self.model.get_image_features(**inputs)
+            image_embeds = self.model.get_image_features(**inputs, legacy_output=False)
 
             return image_embeds
 
-    def embed_batch(self, pixel_images: list[Image.Image]) -> list[torch.Tensor]:
+    def batch_image_features_extraction(self, pixel_images: list[Image.Image]) -> list[torch.Tensor]:
 
         inputs = self.processor(images=pixel_images, return_tensors="pt").to(
             self.device)
 
         with torch.no_grad():
-            image_embeds = self.model.get_image_features(**inputs).pooler_output
+            image_embeds = self.model.get_image_features(**inputs, legacy_output=False)
 
         output = [ image_embeds[i] for i in range(len(pixel_images))]
         return output
 
+    def qformer_feature_extraction(self, pixel_image: Image.Image) -> torch.Tensor:
+        inputs = self.processor(images=pixel_image, return_tensors="pt").to(
+            self.device)
+
+        with torch.no_grad():
+            image_embeds = self.model.get_qformer_features(**inputs, legacy_output=False)
+
+            return image_embeds
+
+    def batch_qformer_feature_extraction(self, pixel_images: list[Image.Image]) -> list[torch.Tensor]:
+
+        inputs = self.processor(images=pixel_images, return_tensors="pt").to(
+            self.device)
+
+        with torch.no_grad():
+            image_embeds = self.model.get_qformer_features(**inputs, legacy_output=False)
+
+        output = [ image_embeds[i] for i in range(len(pixel_images))]
+        return output

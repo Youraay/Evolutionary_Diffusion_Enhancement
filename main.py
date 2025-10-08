@@ -25,19 +25,19 @@ def main(experiment_id):
     selector = TournamentSelector(tournament_size=2)
     mutator = UniformGaussianMutator(mutation_rate=0.2,mutation_strengh=0.2)
     crossover = UniformCrossover()
-    evaluator = KernelDensityEstimationEvaluator(prompt)
+    evaluator = KernelDensityEstimationEvaluator(prompt, metric_path=clip_path)
 
     noise_factory = NoiseFactory()
 
     ml = ModelLoader(cache_dir=os.environ.get("HF_CACHE", ""))
 
     sdxl = ml.load_sdxl()
-    blip2 = ml.load_blip2_embeddings()
+    embed = ml.load_clip_embeddings()
 
     pipe = GeneticAlgorithmPipeline(
         generative_model=sdxl,
         prompt=prompt,
-        embedding_model=blip2,
+        embedding_model=embed,
         crossover_operation=crossover,
         selector=selector,
         mutator=mutator,

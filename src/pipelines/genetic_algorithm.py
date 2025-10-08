@@ -119,7 +119,7 @@ class GeneticAlgorithmPipeline(Pipeline):
         print(f"Menge der Biler {len(pils)}")
         embeddings = []
         for batch in self.create_batches(pils):
-            batch_embeddings = self.embedding_model.embed_batch(batch)
+            batch_embeddings = self.embedding_model.batch_image_features_extraction(batch)
             embeddings.extend(batch_embeddings)
         print(f"Menge der Embeddings {len(embeddings)}")
         scores = self.evaluator.evaluate_batch(embeddings)
