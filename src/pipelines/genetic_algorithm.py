@@ -7,15 +7,15 @@ from typing import Generator, Any
 import pandas as pd
 import torch
 
-from models import Noise
+from src.models import Noise
 from .pipeline import Pipeline
-from ..crossover.base_crossover import CrossoverFunction
-from ..evaluators.base_evaluator import Evaluator
-from ..factorys import NoiseFactory
+from src.crossover.base_crossover import CrossoverFunction
+from src.evaluators.base_evaluator import Evaluator
+from src.factorys import NoiseFactory
 from src.huggingface_models.base_strategy import GenerativModelStrategy, EmbeddingModelStrategy, \
     CaptionModelStrategy
-from ..mutators.base_mutator import MutationFunction
-from ..selector_functions.base_selectorf_unction import SelectorFunction
+from src.mutators.base_mutator import MutationFunction
+from src.selector_functions.base_selectorf_unction import SelectorFunction
 
 logger = logging.getLogger(__name__)
 
@@ -121,10 +121,7 @@ class GeneticAlgorithmPipeline(Pipeline):
             batch_embeddings = self.embedding_model.embed_batch(batch)
             embeddings.extend(batch_embeddings)
 
-        scores = []
-        for batch in self.create_batches(embeddings):
-            batch_scores = self.evaluator.evaluate_batch(batch)
-            scores.extend(batch_scores)
+        scores = self.evaluator.evaluate_batch(embeddings)
 
         captions = []
         if self.caption_model is not None:

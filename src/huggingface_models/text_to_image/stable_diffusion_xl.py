@@ -40,8 +40,9 @@ class StableDiffusionXLModel(GenerativModelStrategy):
                        noise_emds: list[torch.Tensor],
                        prompt: str):
 
+        stack = torch.cat(noise_emds, dim=0)
         images = self.model(prompt=[prompt]*len(noise_emds),
-                           latents=noise_emds,
+                           latents=stack,
                            output_type="pil",
                            num_inference_steps=self.num_inference_steps,
                            guidance_scale=self.guidance_scale).images

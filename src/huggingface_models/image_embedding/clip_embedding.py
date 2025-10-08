@@ -42,6 +42,6 @@ class ClipEmbeddingModel(EmbeddingModelStrategy):
         with torch.no_grad():
             image_embeds = self.model.get_image_features(**inputs)
 
-        image_embeds = [ image_embeds[i] for i in range(pixel_images)]
+        image_embeds = [ image_embeds[i] for i in range(len(pixel_images))]
         return image_embeds
 

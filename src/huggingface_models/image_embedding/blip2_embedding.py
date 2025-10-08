@@ -39,8 +39,13 @@ class Blip2EmbeddingModel(EmbeddingModelStrategy):
             self.device)
 
         with torch.no_grad():
-            image_embeds = self.model.get_image_features(**inputs)
+            image_embeds = self.model.get_image_features(**inputs).pooler_output
 
-        image_embeds = [ image_embeds[i] for i in range(pixel_images)]
-        return image_embeds
+        print(image_embeds.size())
+        print(len(image_embeds))
+        print(len(pixel_images))
+        print(image_embeds)
+
+        output = [ image_embeds[i] for i in range(len(pixel_images))]
+        return output
 
