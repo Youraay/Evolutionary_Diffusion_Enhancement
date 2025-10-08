@@ -15,6 +15,7 @@ class GlobalMaxMeanDivergenceEvaluator(Evaluator):
         path = Path(os.environ.get("BLIP_2_MEAN", ""))
         file = base_path / path / f"{prompt.replace(' ', '_')}.pt"
         self.mean_embedding = torch.load(file)
+        self.name = "GlobalMaxMeanDivergence"
     def evaluate(self, image_features: torch.Tensor, *args, **kwargs) -> dict[str, Any]:
 
         cos = F.cosine_similarity(image_features, self.mean_embedding)
