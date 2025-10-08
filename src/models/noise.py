@@ -71,7 +71,7 @@ class Noise:
                            full_path=full_path,
                            file_format=file_format)
         except ValueError as e:
-            raise ValueError(f"No pil image available for noise {self.id}") from e
+            raise ValueError(f"No pil image available for noise {self.id}: {e}") from e
 
 
     def save_noise_to_rgb(self,
@@ -121,22 +121,22 @@ class Noise:
     def save_noise(self,
                  filepath: str,
     ) -> None:
-        torch.save(self.initial_noise, f"{filepath}/{self.id}")
+        torch.save(self.initial_noise, f"{filepath}/{self.id}.pt")
 
     def save_representation(self,
                  filepath: str,
     ) -> None:
-        torch.save(self.latent_representation, f"{filepath}/img_{self.id}")
+        torch.save(self.latent_representation, f"{filepath}/img_{self.id}.pt")
 
     def save_blip2(self,
                  filepath: str,
     ) -> None:
-        torch.save(self.blip2_embedding, f"{filepath}/blip2_{self.id}")
+        torch.save(self.blip2_embedding, f"{filepath}/blip2_{self.id}.pt")
 
     def save_clip(self,
                  filepath: str,
     ) -> None:
-        torch.save(self.clip_embedding, f"{filepath}/clip_{self.id}")
+        torch.save(self.clip_embedding, f"{filepath}/clip_{self.id}.pt")
 
     def calculate_fitness(self) -> None:
 

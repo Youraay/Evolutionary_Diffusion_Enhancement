@@ -11,6 +11,8 @@ class PCA:
         
 
     def reduce_embeddings(self, X : torch.Tensor, K: int=128) -> torch.Tensor:
+
+        
         X = X.to(torch.float32)
         assert K <= self.Vh.shape[0], f"K={K} is bigger than the original dimension {self.Vh.shape[0]}"
         principal_components = self.Vh[:K, :]

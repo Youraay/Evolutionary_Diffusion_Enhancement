@@ -111,18 +111,19 @@ class GeneticAlgorithmPipeline(Pipeline):
             logging.error(f"FEHLER beim Schreiben der CSV-Datei: {e}")
 
     def one_generation(self):
+
         pils = []
         for batch in self.create_batches([candidate.initial_noise for candidate in self.population]):
             pil_images = self.generative_model.generate_batch(batch, self.prompt)
             pils.extend(pil_images)
-
+        print(f"Menge der Biler {len(pils)}")
         embeddings = []
         for batch in self.create_batches(pils):
             batch_embeddings = self.embedding_model.embed_batch(batch)
             embeddings.extend(batch_embeddings)
-
+        print(f"Menge der Embeddings {len(embeddings)}")
         scores = self.evaluator.evaluate_batch(embeddings)
-
+        print(f"Menge der Scores {len(scores)}")
         captions = []
         if self.caption_model is not None:
 
