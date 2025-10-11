@@ -21,7 +21,6 @@ class TensorLoader(Loader):
 
         output =[ ]
         query = self.base_path / path.name
-        assert query.is_dir(), f"{query} is not a directory"
         glob = path.glob(search_filter)
         for p in glob:
             t = torch.load(
