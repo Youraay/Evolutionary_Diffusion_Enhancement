@@ -8,9 +8,8 @@ from typing import Optional, Dict
 
 def _save_pil(pil_image: Image.Image,
               full_path: Path,
-              file_format : str = "JPEG",
+              file_format: str = "JPEG",
               ) -> None:
-
     full_path.parent.mkdir(parents=True, exist_ok=True)
 
     if pil_image is not None:
@@ -37,15 +36,15 @@ class Noise:
     """
 
     id: str
-    initial_noise : torch.Tensor
-    initial_seed : int = None
+    initial_noise: torch.Tensor
+    initial_seed: int = None
     latent_representation: torch.Tensor = None
-    pil_image : Image.Image = None
-    blip2_embedding : torch.Tensor = None
-    clip_embedding : torch.Tensor = None
+    pil_image: Image.Image = None
+    blip2_embedding: torch.Tensor = None
+    clip_embedding: torch.Tensor = None
     fitness: float = None
     evaluation_scores: list[dict[str, float]] = field(default_factory=list)
-    caption :str = None
+    caption: str = None
     start_generation: int = None
     end_generation: int = None
     parent_1: "Noise" = None
@@ -60,7 +59,7 @@ class Noise:
 
     def save_pil_image(self,
                        filepath: str,
-                       file_format : str = "JPEG",
+                       file_format: str = "JPEG",
                        ) -> None:
 
         try:
@@ -68,15 +67,14 @@ class Noise:
             file = f"{self.filename}.{file_format}"
             full_path = path / file
             _save_pil(pil_image=self.pil_image,
-                           full_path=full_path,
-                           file_format=file_format)
+                      full_path=full_path,
+                      file_format=file_format)
         except ValueError as e:
             raise ValueError(f"No pil image available for noise {self.id}: {e}") from e
 
-
     def save_noise_to_rgb(self,
                           filepath: str,
-                          file_format : str = "JPEG",
+                          file_format: str = "JPEG",
                           ) -> None:
 
         try:
@@ -92,9 +90,9 @@ class Noise:
                              .to(self.initial_noise.device))
             rgb_tensor = torch.einsum("...lxy,lr -> ...rxy", self.initial_noise, weights_tensor) \
                          + biases_tensor.unsqueeze(-1).unsqueeze(-1)
-            
+
             if rgb_tensor.dim() == 4 and rgb_tensor.shape[0] == 1:
-                rgb_tensor = rgb_tensor.squeeze(0) 
+                rgb_tensor = rgb_tensor.squeeze(0)
 
             if rgb_tensor.dim() == 3:
                 image_array = rgb_tensor.clamp(0, 255).byte().cpu().numpy().transpose(1, 2, 0)
@@ -110,36 +108,35 @@ class Noise:
             file = f"{self.filename}.{file_format}"
             full_path = path / file
             _save_pil(pil_image=image,
-                           full_path=full_path,
-                           file_format=file_format)
+                      full_path=full_path,
+                      file_format=file_format)
         except ValueError as e:
             raise ValueError(f"Error while saving image to RGB: {e}")
 
-
     def save_noise(self,
-                 filepath: str,
-    ) -> None:
+                   filepath: str,
+                   ) -> None:
         path = Path(filepath)
         path.mkdir(parents=True, exist_ok=True)
         torch.save(self.initial_noise, f"{filepath}/{self.filename}.pt")
 
     def save_representation(self,
-                 filepath: str,
-    ) -> None:
+                            filepath: str,
+                            ) -> None:
         path = Path(filepath)
         path.mkdir(parents=True, exist_ok=True)
         torch.save(self.latent_representation, f"{filepath}/img_{self.filename}.pt")
 
     def save_blip2(self,
-                 filepath: str,
-    ) -> None:
+                   filepath: str,
+                   ) -> None:
         path = Path(filepath)
         path.mkdir(parents=True, exist_ok=True)
         torch.save(self.blip2_embedding, f"{filepath}/blip2_{self.filename}.pt")
 
     def save_clip(self,
-                 filepath: str,
-    ) -> None:
+                  filepath: str,
+                  ) -> None:
         path = Path(filepath)
         path.mkdir(parents=True, exist_ok=True)
         torch.save(self.clip_embedding, f"{filepath}/clip_{self.filename}.pt")

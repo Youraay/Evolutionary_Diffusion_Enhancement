@@ -17,11 +17,11 @@ class TensorLoader(Loader):
         query = self.base_path / path.name
         return torch.load(path, weights_only=weights_only)
 
-    def load_files(self, path: Path, search_filter: str = "*.pt",device : str= "cuda", weights_only=True) -> list[torch.Tensor]:
+    def load_files(self, path: Path, query_filter: str = "*.pt", device : str= "cuda", weights_only=True) -> list[torch.Tensor]:
 
         output =[ ]
         query = self.base_path / path.name
-        glob = path.glob(search_filter)
+        glob = path.glob(query_filter)
         for p in glob:
             print(p)
             t = torch.load(
