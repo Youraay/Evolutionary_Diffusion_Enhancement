@@ -1,5 +1,6 @@
 import random
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Tuple, List
 
 import torch
@@ -130,3 +131,35 @@ class NoiseFactory:
 
         return noises
 
+
+    def create_from_files(self,
+                          base_path: Path,
+                          prompt: str,
+                          experiment_id: int,
+                          generation: int | None = None) -> list[Noise]:
+        path = base_path / "results" / f"{prompt.replace(' ', '_')}_{experiment_id}"
+
+        initial_noise_dir = path / "initial_noise"
+        blip2_dir = path / "blip2"
+        output = []
+
+        if generation is None:
+            glob = path.glob()
+        else:
+            glob = path.glob(f"*g{generation}_*.pt")
+
+        for i in glob:
+            raw = str(i.name).split("_")
+
+            noise = Noise(
+                id=raw[2],
+                initial_noise=torch.load(i, map_location=torch.device(self.device)),
+                fitness=float(raw[3].replace('f', '').replace('.pt', '')),
+                start_generation= int(raw[2]),
+                end_generation= int(raw[2]),
+            )
+
+            blip2_path = blip2_dir / noise.filename
+            noise.blip2_embedding = torch.load(blip2_path, map_location=torch.device(self.device))
+        output.sort(key=lambda x: x.id)
+        return output
