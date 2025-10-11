@@ -140,26 +140,33 @@ class NoiseFactory:
         path = base_path / "results" / f"{prompt.replace(' ', '_')}_{experiment_id}"
 
         initial_noise_dir = path / "initial_noise"
+        print(initial_noise_dir.is_dir())
         blip2_dir = path / "blip2"
         output = []
-
+        print(initial_noise_dir)
+        
         if generation is None:
-            glob = path.glob()
+            glob = initial_noise_dir.glob("*.pt")
         else:
-            glob = path.glob(f"*g{generation}_*.pt")
-
+            filter_query = f"g{generation}_*.pt"
+            print(f"filter: {filter_query}")
+            glob = initial_noise_dir.glob(filter_query)
+            
         for i in glob:
+            print(f"filename: {i.name}")
             raw = str(i.name).split("_")
 
             noise = Noise(
-                id=raw[2],
+                id=f"n_{raw[2]}",
                 initial_noise=torch.load(i, map_location=torch.device(self.device)),
                 fitness=float(raw[3].replace('f', '').replace('.pt', '')),
-                start_generation= int(raw[2]),
-                end_generation= int(raw[2]),
+                start_generation= int(raw[0].replace('g', '')),
+                end_generation= int(raw[0].replace('g', '')),
             )
 
-            blip2_path = blip2_dir / noise.filename
+            blip2_path = blip2_dir / f"blip2_{noise.filename}.pt"
             noise.blip2_embedding = torch.load(blip2_path, map_location=torch.device(self.device))
+            output.append(noise)
+            
         output.sort(key=lambda x: x.id)
         return output
