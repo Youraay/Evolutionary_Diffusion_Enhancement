@@ -23,6 +23,7 @@ class TensorLoader(Loader):
         query = self.base_path / path.name
         glob = path.glob(search_filter)
         for p in glob:
+            print(p)
             t = torch.load(
                 str(p),
                 map_location=torch.device(device),

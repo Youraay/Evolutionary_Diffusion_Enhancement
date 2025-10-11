@@ -56,7 +56,7 @@ class Noise:
     @property
     def filename(self):
         fitness = 0.0 if self.fitness is None else self.fitness
-        return f"image_g{self.end_generation}_{self.id}_f{fitness}"
+        return f"g{self.end_generation}_id{self.id}_f{fitness}"
 
     def save_pil_image(self,
                        filepath: str,
@@ -121,28 +121,28 @@ class Noise:
     ) -> None:
         path = Path(filepath)
         path.mkdir(parents=True, exist_ok=True)
-        torch.save(self.initial_noise, f"{filepath}/{self.id}.pt")
+        torch.save(self.initial_noise, f"{filepath}/{self.filename}.pt")
 
     def save_representation(self,
                  filepath: str,
     ) -> None:
         path = Path(filepath)
         path.mkdir(parents=True, exist_ok=True)
-        torch.save(self.latent_representation, f"{filepath}/img_{self.id}.pt")
+        torch.save(self.latent_representation, f"{filepath}/img_{self.filename}.pt")
 
     def save_blip2(self,
                  filepath: str,
     ) -> None:
         path = Path(filepath)
         path.mkdir(parents=True, exist_ok=True)
-        torch.save(self.blip2_embedding, f"{filepath}/blip2_{self.id}.pt")
+        torch.save(self.blip2_embedding, f"{filepath}/blip2_{self.filename}.pt")
 
     def save_clip(self,
                  filepath: str,
     ) -> None:
         path = Path(filepath)
         path.mkdir(parents=True, exist_ok=True)
-        torch.save(self.clip_embedding, f"{filepath}/clip_{self.id}.pt")
+        torch.save(self.clip_embedding, f"{filepath}/clip_{self.filename}.pt")
 
     def calculate_fitness(self) -> None:
 
