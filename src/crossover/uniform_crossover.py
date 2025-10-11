@@ -25,7 +25,10 @@ class UniformCrossover(CrossoverFunction):
         assert parent_1.shape == parent_2.shape, "Noises must have the same size for crossover."
 
         swap_rate = kwargs.pop("swap_rate", self.swap_rate)
-        crossover_mask = torch.rand(parent_1) < swap_rate
+        parent_1 = parent_1.to("cuda")
+        parent_2 = parent_2.to("cuda")
+        crossover_mask = torch.rand(parent_1.shape) < swap_rate
+        crossover_mask = crossover_mask.to("cuda")
         child = torch.where(crossover_mask, parent_1, parent_2)
 
         return child

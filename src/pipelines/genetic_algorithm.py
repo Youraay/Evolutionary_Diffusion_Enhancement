@@ -55,7 +55,6 @@ class GeneticAlgorithmPipeline(Pipeline):
         self.selection_function = selector
         self.mutator = mutator
 
-
         self.batch_size = batch_size
         self.generations_done = 0
 

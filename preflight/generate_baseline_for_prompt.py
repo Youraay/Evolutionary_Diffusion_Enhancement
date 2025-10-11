@@ -14,7 +14,7 @@ logger.setLevel(logging.DEBUG)
 def create_batches(embeds: list[Any]) -> Generator[list[Any], None, None]:
     num_samples = len(embeds)
     for i in range(0, num_samples, 20):
-        yield embeds[i:i + self.batch_size]
+        yield embeds[i:i + 3]
 
 
 def generate_baseline_for_prompt(

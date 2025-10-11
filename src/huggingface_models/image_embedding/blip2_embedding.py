@@ -28,7 +28,7 @@ class Blip2EmbeddingModel(EmbeddingModelStrategy):
             self.device)
 
         with torch.no_grad():
-            image_embeds = self.model.get_image_features(**inputs, legacy_output=False)
+            image_embeds = self.model.get_image_features(**inputs).pooler_output
 
             return image_embeds
 
@@ -38,9 +38,9 @@ class Blip2EmbeddingModel(EmbeddingModelStrategy):
             self.device)
 
         with torch.no_grad():
-            image_embeds = self.model.get_image_features(**inputs, legacy_output=False)
+            image_embeds = self.model.get_image_features(**inputs).pooler_output
 
-        output = [ image_embeds[i] for i in range(len(pixel_images))]
+        output = [ image_embeds[i].unsqueeze(0) for i in range(len(pixel_images))]
         return output
 
     def qformer_feature_extraction(self, pixel_image: Image.Image) -> torch.Tensor:

@@ -20,7 +20,8 @@ class StableDiffusionXLModel(GenerativModelStrategy):
         self.model = StableDiffusionXLPipeline.from_pretrained(model,
                                                                torch_dtype=dtype,
                                                                cache_dir=cache_dir,
-                                                               use_safetensors=True)
+                                                               use_safetensors=True,
+                                                               )
         self.model.to(device=device)
         if compile_pipeline:
             self.model.unet = torch.compile(self.model.unet, mode="reduce-overhead", fullgraph=True)
@@ -33,7 +34,9 @@ class StableDiffusionXLModel(GenerativModelStrategy):
                            latents =noise_emds,
                            output_type="pil",
                            num_inference_steps= self.num_inference_steps,
-                           guidance_scale = self.guidance_scale).images[0]
+                           guidance_scale = self.guidance_scale,
+                           disable_tqdm=True ).images[0]
+                           
         return image
 
     def generate_batch(self,
@@ -45,7 +48,9 @@ class StableDiffusionXLModel(GenerativModelStrategy):
                            latents=stack,
                            output_type="pil",
                            num_inference_steps=self.num_inference_steps,
-                           guidance_scale=self.guidance_scale).images
+                           guidance_scale=self.guidance_scale,
+                           disable_tqdm=True).images
+                           
         return images
 
 class StableDiffusionXLRefinerStrategy(StableDiffusionXLModel):
@@ -99,9 +104,9 @@ class StableDiffusionXLRefinerStrategy(StableDiffusionXLModel):
     def generate_batch(self,
                        noise_emds: list[torch.Tensor],
                        prompt: str):
-
+        stack = torch.cat(noise_emds, dim=0)
         images = self.model(prompt=[prompt]*len(noise_emds),
-                           latents=noise_emds,
+                           latents=stack,
                            output_type="latent",
                            denoising_end=self.high_noise_frac,
                            num_inference_steps=self.num_inference_steps,
