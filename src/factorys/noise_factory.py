@@ -32,7 +32,7 @@ def _create_latent_shape(batch_size: int = 1,
 
 @dataclass
 class NoiseFactory:
-    device : torch.device = "cuda"
+    device : str = "cuda"
     dtype : torch.dtype = torch.float16
     seed_clamp : Tuple[int, int] = (1, 2**32 -1)
     id_count: int = 0
@@ -144,14 +144,14 @@ class NoiseFactory:
         blip2_dir = path / "blip2"
         output = []
         print(initial_noise_dir)
-        
+
         if generation is None:
             glob = initial_noise_dir.glob("*.pt")
         else:
             filter_query = f"g{generation}_*.pt"
             print(f"filter: {filter_query}")
             glob = initial_noise_dir.glob(filter_query)
-            
+
         for i in glob:
             print(f"filename: {i.name}")
             raw = str(i.name).split("_")
@@ -164,9 +164,9 @@ class NoiseFactory:
                 end_generation= int(raw[0].replace('g', '')),
             )
 
-            blip2_path = blip2_dir / f"blip2_{noise.filename}.pt"
-            noise.blip2_embedding = torch.load(blip2_path, map_location=torch.device(self.device))
+            # blip2_path = blip2_dir / f"blip2_{noise.filename}.pt"
+            # noise.blip2_embedding = torch.load(blip2_path, map_location=torch.device(self.device))
             output.append(noise)
-            
+
         output.sort(key=lambda x: x.id)
         return output

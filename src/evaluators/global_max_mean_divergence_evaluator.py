@@ -10,7 +10,7 @@ from src.huggingface_models.image_embedding.blip2_embedding import Blip2Embeddin
 
 class GlobalMaxMeanDivergenceEvaluator(Evaluator):
 
-    def __init__(self, prompt):
+    def __init__(self, prompt: str):
         base_path = Path(os.environ.get("BASE_PATH", ""))
         path = Path(os.environ.get("BLIP_2_MEAN", ""))
         file = base_path / path / f"{prompt.replace(' ', '_')}.pt"
