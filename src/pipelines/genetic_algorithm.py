@@ -63,7 +63,7 @@ class GeneticAlgorithmPipeline(Pipeline):
         self.name = f"{self.prompt.replace(' ', '_')}_{experiment_id}"
 
         self.result_path = base_path / 'results' / self.name
-        self.state_path = base_path / 'states' / self.name
+        self.state_path = base_path / 'states' / f"{self.name}.csv"
 
     def create_batches(self, embeds : list[Any]) -> Generator[list[Any], None, None]:
         num_samples = len(embeds)
@@ -94,15 +94,17 @@ class GeneticAlgorithmPipeline(Pipeline):
                 candidate.evaluation_scores[0]["name"],
                 candidate.evaluation_scores[0]["score"],
                 getattr(candidate, 'caption', ''),
-                candidate.file_name
+                candidate.filename
             ]
-        data_rows.append(row)
+            data_rows.append(row)
+
         new_data_df = pd.DataFrame(data_rows, columns=columns)
-        if not self.output_file.exists():
+        if not self.state_path.exists():
             header_needed = True
         else:
             header_needed = False
         try:
+            self.state_path.parent.mkdir(parents=True, exist_ok=True)
             new_data_df.to_csv(self.state_path,
                                 mode='a',
                                 header=header_needed,
@@ -113,14 +115,21 @@ class GeneticAlgorithmPipeline(Pipeline):
     def one_generation(self):
 
         pils = []
+
+        bc = 0
         for batch in self.create_batches([candidate.initial_noise for candidate in self.population]):
+
             pil_images = self.generative_model.generate_batch(batch, self.prompt)
             pils.extend(pil_images)
+            print(f"Batch {bc} generiert")
+            bc += 1
         print(f"Menge der Biler {len(pils)}")
         embeddings = []
         for batch in self.create_batches(pils):
             batch_embeddings = self.embedding_model.batch_image_features_extraction(batch)
+            
             embeddings.extend(batch_embeddings)
+        print(embeddings[0].shape)
         print(f"Menge der Embeddings {len(embeddings)}")
         scores = self.evaluator.evaluate_batch(embeddings)
         print(f"Menge der Scores {len(scores)}")
@@ -151,12 +160,14 @@ class GeneticAlgorithmPipeline(Pipeline):
             parent1 = self.selection_function.select(self.population)
             parent2 = self.selection_function.select(self.population)
 
-            if random.random() < self.crossover_rate:
+            if random.random() > self.crossover_rate:
+                print("Parent 1 übernommen")
                 child = copy.deepcopy(parent1)
                 child.end_generation = self.generations_done
-                new_gen.append(parent1)
+                new_gen.append(child)
 
             else:
+                print("Neues Kind generiert")
                 child_noise = self.crossover_operation.crossover(parent1.initial_noise, parent2.initial_noise)
                 child = self.noise_factory.create_noise_from_noise(child_noise)
                 child.end_generation = self.generations_done
@@ -164,8 +175,10 @@ class GeneticAlgorithmPipeline(Pipeline):
                 child.crossover = True
 
                 if random.random() < self.initial_mutation_rate:
+                    print("Mutation!")
                     child.initial_noise = self.mutator.mutate(child.initial_noise)
                     child.mutate = True
+                new_gen.append(child)
 
         self.population = new_gen
 
