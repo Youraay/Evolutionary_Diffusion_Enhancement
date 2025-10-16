@@ -22,7 +22,7 @@ echo "loaded conda environment"
 echo "start transfer from cat to dogs"
 date
 
-python3 simulations/seed_transfare.py --experiment_id 1549660
+python3 -m simulations.seed_transfare --experiment_id 1549660
  
 echo job finished
 date

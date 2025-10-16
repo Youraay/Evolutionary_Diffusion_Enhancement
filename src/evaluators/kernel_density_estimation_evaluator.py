@@ -77,7 +77,7 @@ class KernelDensityEstimationEvaluator(Evaluator):
         diff = embeddings - first_sample
         distances_sq = torch.sum(diff**2, dim=1)
         max_non_zero_distance = distances_sq.max().item()
-        print(f"DEBUG: Maximale Distanz² zum ersten Sample: {max_non_zero_distance:.8f}")
+        print(f"DEBUG: Maximale Distanz^2 zum ersten Sample: {max_non_zero_distance:.8f}")
 
     def calculate_bandwidth(self, embeddings: torch.Tensor, N: int, rule_of_thumb: str = 'silverman'):
         embeddings = embeddings.cpu()
